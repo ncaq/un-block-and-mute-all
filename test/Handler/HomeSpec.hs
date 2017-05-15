@@ -1,23 +1,11 @@
 module Handler.HomeSpec (spec) where
 
-import TestImport
+import           TestImport
 
 spec :: Spec
 spec = withApp $ do
 
-    describe "Homepage" $ do
-      it "loads the index and checks it looks right" $ do
+    describe "home" $ do
+      it "getHomeR" $ do
           get HomeR
           statusIs 200
-          htmlAnyContain "h1" "a modern framework for blazing fast websites"
-
-          request $ do
-              setMethod "POST"
-              setUrl HomeR
-              addToken
-              fileByLabel "Choose a file" "test/Spec.hs" "text/plain" -- talk about self-reference
-              byLabel "What's on the file?" "Some Content"
-
-          -- more debugging printBody
-          htmlAllContain ".upload-response" "text/plain"
-          htmlAllContain ".upload-response" "Some Content"

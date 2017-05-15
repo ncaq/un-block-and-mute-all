@@ -20,5 +20,5 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 # mutable-static: false
 # skip-combining: false
 
-copyright: Insert copyright statement here
+copyright: ©ncaq
 #analytics: UA-YOURCODE
