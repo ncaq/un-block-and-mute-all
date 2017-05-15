@@ -12,25 +12,23 @@ module Application
     , handler
     ) where
 
-import Control.Monad.Logger                 (liftLoc)
-import Import
-import Language.Haskell.TH.Syntax           (qLocation)
-import Network.Wai (Middleware)
-import Network.Wai.Handler.Warp             (Settings, defaultSettings,
-                                             defaultShouldDisplayException,
-                                             runSettings, setHost,
-                                             setOnException, setPort, getPort)
-import Network.Wai.Middleware.RequestLogger (Destination (Logger),
-                                             IPAddrSource (..),
-                                             OutputFormat (..), destination,
-                                             mkRequestLogger, outputFormat)
-import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
-                                             toLogStr)
+import           Control.Monad.Logger                 (liftLoc)
+import           Import
+import           Language.Haskell.TH.Syntax           (qLocation)
+import           Network.Wai                          (Middleware)
+import           Network.Wai.Handler.Warp             (Settings, defaultSettings,
+                                                       defaultShouldDisplayException, getPort,
+                                                       runSettings, setHost, setOnException,
+                                                       setPort)
+import           Network.Wai.Middleware.RequestLogger (Destination (Logger), IPAddrSource (..),
+                                                       OutputFormat (..), destination,
+                                                       mkRequestLogger, outputFormat)
+import           System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet, toLogStr)
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
-import Handler.Common
-import Handler.Home
+import           Handler.Common
+import           Handler.Home
 
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the
@@ -105,8 +103,11 @@ getAppSettings :: IO AppSettings
 getAppSettings = loadYamlSettings [configSettingsYml] [] useEnv
 
 -- | main function for use by yesod devel
+-- | main function for use by yesod devel
 develMain :: IO ()
-develMain = develMainHelper getApplicationDev
+develMain = do
+    (_, _, _, watchProcess) <- createProcess $ (proc "yarn" ["run", "watch"]) { create_group = True }
+    develMainHelper getApplicationDev `finally` interruptProcessGroupOf watchProcess
 
 -- | The @main@ function for an executable running this site.
 appMain :: IO ()

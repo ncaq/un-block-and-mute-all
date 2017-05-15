@@ -11,6 +11,9 @@ $doctype 5
         ^{pageHead pc}
     <body>
         ^{pageBody pc}
+        <script>
+            const node = document.getElementById('main');
+            const app = Elm.Main.embed(node);
 
         $maybe analytics <- appAnalytics $ appSettings master
             <script>

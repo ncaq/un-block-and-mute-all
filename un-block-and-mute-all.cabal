@@ -1,7 +1,7 @@
 name:              un-block-and-mute-all
 version:           0.0.0
 cabal-version:     >= 1.8
-build-type:        Simple
+build-type:        Custom
 
 Flag dev
     Description:   Turn on development settings, like auto-reload templates.
@@ -63,6 +63,7 @@ library
                  , http-conduit
                  , monad-control
                  , monad-logger
+                 , process
                  , safe
                  , shakespeare
                  , template-haskell

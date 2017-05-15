@@ -8,16 +8,14 @@ module Settings where
 
 import           ClassyPrelude.Yesod
 import qualified Control.Exception          as Exception
-import           Data.Aeson                 (Result (..), fromJSON, withObject,
-                                             (.!=), (.:?))
+import           Data.Aeson                 (Result (..), fromJSON, withObject, (.!=), (.:?))
 import           Data.FileEmbed             (embedFile)
 import           Data.Yaml                  (decodeEither')
 import           Language.Haskell.TH.Syntax (Exp, Name, Q)
 import           Network.Wai.Handler.Warp   (HostPreference)
+import           Text.Julius                (jsFile, jsFileReload)
 import           Yesod.Default.Config2      (applyEnvValue, configSettingsYml)
-import           Yesod.Default.Util         (WidgetFileSettings,
-                                             widgetFileNoReload,
-                                             widgetFileReload)
+import           Yesod.Default.Util
 
 -- | Runtime settings to configure this application. These settings can be
 -- loaded from various sources: defaults, environment variables, config files,
@@ -93,7 +91,7 @@ instance FromJSON AppSettings where
 --
 -- https://github.com/yesodweb/yesod/wiki/Overriding-widgetFile
 widgetFileSettings :: WidgetFileSettings
-widgetFileSettings = def
+widgetFileSettings = def { wfsLanguages = \hset -> defaultTemplateLanguages hset ++ [ TemplateLanguage True "js" jsFile jsFileReload ] }
 
 -- | How static files should be combined.
 combineSettings :: CombineSettings

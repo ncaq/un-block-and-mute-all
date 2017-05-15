@@ -3,4 +3,6 @@ module Handler.Home where
 import           Import
 
 getHomeR :: Handler Html
-getHomeR = defaultLayout $ setTitle "ブロック全解除ツール"
+getHomeR = defaultLayout $ do
+    setTitle "ブロック全解除ツール"
+    $(widgetFile "home")

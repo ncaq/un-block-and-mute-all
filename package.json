@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "elm": "^0.18.0",
+    "watch": "^1.0.2"
+  },
+  "scripts": {
+    "build": "elm-make templates/Home.elm --output templates/home.js",
+    "watch": "watch 'yarn run build' templates/"
+  }
+}
