@@ -1,6 +1,11 @@
 <div .container>
     $maybe msg <- mmsg
-      <div .alert.alert-info #message>#{msg}
+      <div .alert .alert-info #message>#{msg}
+
+$maybe screenName <- mScreenName
+    <p>ようこそ #{screenName}
+$nothing
+    <a href=@{AuthR twitterUrl}>ログイン
 
 ^{widget}
 

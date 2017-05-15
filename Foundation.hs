@@ -1,11 +1,11 @@
 module Foundation where
 
-import Import.NoFoundation
-import Text.Hamlet                 (hamletFile)
-import Text.Jasmine                (minifym)
-import Yesod.Core.Types            (Logger)
-import Yesod.Default.Util          (addStaticContentExternal)
-import qualified Yesod.Core.Unsafe as Unsafe
+import           Import.NoFoundation
+import           Text.Hamlet         (hamletFile)
+import           Text.Jasmine        (minifym)
+import           Yesod.Core.Types    (Logger)
+import qualified Yesod.Core.Unsafe   as Unsafe
+import           Yesod.Default.Util  (addStaticContentExternal)
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -42,7 +42,7 @@ instance Yesod App where
     -- see: https://github.com/yesodweb/yesod/wiki/Overriding-approot
     approot = ApprootRequest $ \app req ->
         case appRoot $ appSettings app of
-            Nothing -> getApprootText guessApproot app req
+            Nothing   -> getApprootText guessApproot app req
             Just root -> root
 
     -- Store session data on the client in encrypted cookies,
@@ -63,6 +63,8 @@ instance Yesod App where
     defaultLayout widget = do
         master <- getYesod
         mmsg <- getMessage
+        mOAuthToken <- lookupSession "oauth_token"
+        mScreenName <- lookupSession "screen_name"
         pc <- widgetToPageContent $ do
             addStylesheet $ StaticR css_bootstrap_css
             $(widgetFile "default-layout")
@@ -70,9 +72,9 @@ instance Yesod App where
 
     -- Routes not requiring authenitcation.
     isAuthorized FaviconR _ = return Authorized
-    isAuthorized RobotsR _ = return Authorized
+    isAuthorized RobotsR _  = return Authorized
     -- Default to Authorized for now.
-    isAuthorized _ _ = return Authorized
+    isAuthorized _ _        = return Authorized
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
@@ -101,6 +103,29 @@ instance Yesod App where
             || level == LevelError
 
     makeLogger = return . appLogger
+
+instance YesodAuth App where
+    type AuthId App = Text
+
+    loginDest _ = HomeR
+    logoutDest _ = HomeR
+
+    authenticate creds = do
+        let setTwitter key = mapM_ (setSession key) (lookup key (credsExtra creds))
+        setTwitter "oauth_token"
+        setTwitter "user_id"
+        setTwitter "screen_name"
+        setTwitter "x_auth_expires"
+        return $ Authenticated (credsIdent creds)
+
+    authPlugins master = [ authTwitterUsingUserId
+                           (encodeUtf8 (appTwitterKey (appSettings master)))
+                           (encodeUtf8 (appTwitterSecret (appSettings master)))
+                         ]
+
+    authHttpManager = getHttpManager
+
+    maybeAuthId = lookupSession "_ID"
 
 -- This instance is required to use forms. You can modify renderMessage to
 -- achieve customized and internationalized form validation messages.

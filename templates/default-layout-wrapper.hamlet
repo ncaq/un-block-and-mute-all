@@ -4,6 +4,10 @@ $doctype 5
         <meta charset="utf-8">
         <title>#{pageTitle pc}
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        $maybe oAuthToken <- mOAuthToken
+            <meta #oauth_token content=#{oAuthToken}>
+        $maybe screenName <- mScreenName
+            <meta #screen_name content=#{screenName}>
         ^{pageHead pc}
     <body>
         ^{pageBody pc}

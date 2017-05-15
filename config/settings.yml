@@ -22,3 +22,6 @@ ip-from-header: "_env:IP_FROM_HEADER:false"
 
 copyright: ©ncaq
 #analytics: UA-YOURCODE
+
+twitter-key: "_env:TWITTER_KEY:"
+twitter-secret: "_env:TWITTER_SECRET:"
