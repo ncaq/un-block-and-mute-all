@@ -63,7 +63,6 @@ instance Yesod App where
     defaultLayout widget = do
         master <- getYesod
         mmsg <- getMessage
-        mOAuthToken <- lookupSession "oauth_token"
         mScreenName <- lookupSession "screen_name"
         pc <- widgetToPageContent $ do
             addStylesheet $ StaticR css_bootstrap_css
