@@ -1,9 +1,35 @@
+port module Main exposing (..)
+
 import Html exposing (..)
-import Html.Events exposing (..)
-import Json.Decode exposing (..)
+import Http exposing (..)
+import Json.Decode as Json
 
-main = Html.beginnerProgram { model = [], update = update, view = view }
+main : Program Never Model Msg
+main = Html.program { init = init, view = view, update = update, subscriptions = subscriptions }
 
-update msg = msg
+type alias Model =
+    { oauthToken : String
+    , screenName : String
+    }
 
-view model = div [] [ text "elm dummy" ]
+type Msg = GetTwitterValue Model
+
+port jsGetTwitterValue : (Model -> msg) -> Sub msg
+
+init : (Model, Cmd Msg)
+init = (Model "" "", Cmd.none)
+
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model =
+    case msg of
+        GetTwitterValue { oauthToken, screenName } ->
+            ({ model | oauthToken = oauthToken, screenName = screenName }, Cmd.none)
+
+view : Model -> Html Msg
+view model =
+    case model of
+        { oauthToken, screenName } ->
+            div [] [ text screenName ]
+
+subscriptions : Model -> Sub Msg
+subscriptions model = jsGetTwitterValue GetTwitterValue

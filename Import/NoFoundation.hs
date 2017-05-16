@@ -11,6 +11,7 @@ import           Settings.StaticFiles     as Import
 import           System.Directory         as Import
 import           System.Process           as Import
 import           Text.Hamlet              as Import hiding (Env)
+import           Text.Julius              as Import
 import           Yesod.Auth               as Import
 import           Yesod.Auth.OAuth         as Import hiding (delete, insert)
 import           Yesod.Core.Types         as Import (loggerSet)
