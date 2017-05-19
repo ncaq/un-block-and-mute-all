@@ -112,6 +112,7 @@ instance YesodAuth App where
     authenticate creds = do
         let setTwitter key = mapM_ (setSession key) (lookup key (credsExtra creds))
         setTwitter "oauth_token"
+        setTwitter "oauth_token_secret"
         setTwitter "user_id"
         setTwitter "screen_name"
         setTwitter "x_auth_expires"
