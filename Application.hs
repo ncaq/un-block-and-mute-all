@@ -1,3 +1,4 @@
+{-# LANGUAGE NoDisambiguateRecordFields #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 module Application
     ( getApplicationDev

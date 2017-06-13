@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP #-}
 module Import.NoFoundation (module Import) where
 
-import           ClassyPrelude.Yesod      as Import
+import           ClassyPrelude.Yesod      as Import hiding (Handler)
 import           Control.Arrow            as Import (left, right)
 import           Data.Ratio               as Import
 import           Data.Time                as Import

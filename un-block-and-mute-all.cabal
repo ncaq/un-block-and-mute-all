@@ -61,6 +61,7 @@ library
                  , file-embed
                  , hjsmin
                  , http-conduit
+                 , lens
                  , monad-control
                  , monad-logger
                  , process
@@ -69,6 +70,8 @@ library
                  , template-haskell
                  , text
                  , time
+                 , twitter-conduit
+                 , twitter-types
                  , unordered-containers
                  , vector
                  , wai

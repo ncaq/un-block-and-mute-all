@@ -110,12 +110,12 @@ instance YesodAuth App where
     logoutDest _ = HomeR
 
     authenticate creds = do
-        let setTwitter key = mapM_ (setSession key) (lookup key (credsExtra creds))
-        setTwitter "oauth_token"
-        setTwitter "oauth_token_secret"
-        setTwitter "user_id"
-        setTwitter "screen_name"
-        setTwitter "x_auth_expires"
+        let setSessionCreds key = mapM_ (setSession key) (lookup key (credsExtra creds))
+        setSessionCreds "oauth_token"
+        setSessionCreds "oauth_token_secret"
+        setSessionCreds "user_id"
+        setSessionCreds "screen_name"
+        setSessionCreds "x_auth_expires"
         return $ Authenticated (credsIdent creds)
 
     authPlugins master = [ authTwitterUsingUserId
