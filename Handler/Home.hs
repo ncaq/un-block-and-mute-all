@@ -11,11 +11,16 @@ import           Web.Twitter.Conduit.Parameters.TH
 import           Web.Twitter.Types
 
 getHomeR :: Handler Html
-getHomeR = defaultLayout $ do
-    setTitle "全解除ツール(WIP)"
-    $(widgetFile "home")
-    $(widgetFile "elm-main-embed")
-    $(widgetFile "twitter-value")
+getHomeR = do
+    mAuth <- maybeAuthId
+    defaultLayout $ do
+        setTitle "全解除ツール(WIP)"
+        case mAuth of
+            Just _ -> do
+                $(widgetFile "home")
+                $(widgetFile "elm-main-embed")
+                $(widgetFile "twitter-value")
+            _ -> return ()
 
 getBlocksR :: Handler Value
 getBlocksR = do
@@ -50,4 +55,5 @@ sessionCredential = do
     case (mOAuthToken, mOAuthTokenSecret) of
         (Just oauthToken, Just oauthTokenSecret) ->
             return $ newCredential (encodeUtf8 oauthToken) (encodeUtf8 oauthTokenSecret)
-        _                                        -> notAuthenticated
+        _ -> notAuthenticated
+
