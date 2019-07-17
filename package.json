@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "elm": "^0.18.0",
+    "elm": "^0.19.0-no-deps",
     "watch": "^1.0.2"
   },
   "scripts": {
